@@ -17,16 +17,16 @@ const eq = (type, width, gap) => {
     const height = h * maxHeight;
     const x = i * width + gap * i;
 
+    //const randomAlpha = Math.random() * 0.5 + 0.5;
+    const randomAlpha = h > 0.8 ? 1 : h;
+
     const gradient2 = ctx.createLinearGradient(x, posY - height, x, posY);
 
     gradient2.addColorStop(0, `rgba(240,125,255,${0})`);
-    gradient2.addColorStop(
-      0.8,
-      `rgba(240,125,255, ${Math.min(Math.max(h + 0.1, 0), 1)})`,
-    );
-    gradient2.addColorStop(0.98, `rgba(248,191,255,${h < 0.1 ? 0.5 : 1})`);
+    gradient2.addColorStop(0.8, `rgba(240,125,255, ${randomAlpha})`);
+    gradient2.addColorStop(0.98, `rgba(248,191,255,1)`);
 
-    gradient2.addColorStop(1, `rgba(255,255,255, ${h < 0.1 ? 0 : 1})`);
+    gradient2.addColorStop(1, `rgba(255,255,255, 1)`);
 
     ctx.fillStyle = gradient2;
 
@@ -62,7 +62,7 @@ const drawView = (time) => {
 
     //ctx.clearRect(0, 0, 150, 150);
     ctx.reset();
-    const gap = 7;
+    const gap = 5;
     const barsNo = audioArray.length;
     const totalGaps = gap * (barsNo - 1);
 
