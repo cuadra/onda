@@ -20,6 +20,21 @@ Bun.serve({
         headers: { "Content-Type": "application/javascript" },
       });
     }
+    if (path === "/src/AudioInfo.js") {
+      return new Response(Bun.file("./src/AudioInfo.js"), {
+        headers: { "Content-Type": "application/javascript" },
+      });
+    }
+    if (path === "/src/Views.js") {
+      return new Response(Bun.file("./src/Views.js"), {
+        headers: { "Content-Type": "application/javascript" },
+      });
+    }
+    if (path === "/src/Animation.js") {
+      return new Response(Bun.file("./src/Animation.js"), {
+        headers: { "Content-Type": "application/javascript" },
+      });
+    }
 
     if (path === "/") {
       return new Response(Bun.file("./src/index.html"), {

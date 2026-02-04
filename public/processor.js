@@ -1,4 +1,8 @@
 class TapProcessor extends AudioWorkletProcessor {
+  constructor() {
+    super();
+    this.counter = 0;
+  }
   process(inputs, outputs) {
     const input = inputs[0];
     const output = outputs[0];
@@ -14,8 +18,10 @@ class TapProcessor extends AudioWorkletProcessor {
     }
 
     // If you want to analyze, post a COPY (not the original buffer)
-    // (Posting every block is heavy; consider throttling later.)
-    this.port.postMessage(input[0].slice());
+
+    if (this_counter++ % 60 === 0) {
+      this.port.postMessage(input[0].slice());
+    }
 
     return true;
   }
