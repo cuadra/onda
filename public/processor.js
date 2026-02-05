@@ -19,7 +19,7 @@ class TapProcessor extends AudioWorkletProcessor {
 
     // If you want to analyze, post a COPY (not the original buffer)
 
-    if (this_counter++ % 60 === 0) {
+    if (this.counter++ % 60 === 0) {
       this.port.postMessage(input[0].slice());
     }
 
