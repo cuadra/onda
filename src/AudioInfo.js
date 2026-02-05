@@ -1,12 +1,13 @@
+import { Animation } from "./Animation.js";
+
 export class AudioInfo {
-  #audioArray = new Uint8Array[0]();
+  #animation = new Animation();
+  #audioArray = new Uint8Array();
   #animating = false;
   #frameId = null;
   #lastTime = 0;
   #acc = 0;
   #boom = 0;
-  //#canvas = document.querySelector("canvas");
-  //#canvasSize = { width: window.innerWidth, height: window.innerHeight };
   #audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   #audio = null;
   #source = null;
@@ -16,10 +17,30 @@ export class AudioInfo {
   #wave = null;
   //bass options
   #tap = null;
+  #connected = false;
   constructor(audio) {
     this.#audio = audio;
   }
 
+  async Start() {
+    if (!this.#connected) {
+      await this.loadWorklet("processor.js");
+    }
+    this.#connected = true;
+    this.Resume();
+  }
+  Resume() {
+    this.#animation.start();
+    this.#audioCtx.resume();
+  }
+  Stop() {
+    this.#animation.stop();
+    this.#audioCtx.suspend();
+  }
+  Close() {
+    this.#animation.stop();
+    this.#audioCtx.close();
+  }
   getAudioArray() {
     return this.#audioArray;
   }
@@ -44,11 +65,10 @@ export class AudioInfo {
     this.#bassAnalyzer.fftSize = 1024;
     this.#bassAnalyzer.smoothingTimeConstant = 0.8;
     this.#source.connect(this.#bassAnalyzer);
+    this.#tap = new AudioWorkletNode(this.#audioCtx, "tap-processor");
     this.#source.connect(this.#tap).connect(this.#audioCtx.destination);
     this.#bassAnalyzer.connect(this.#audioCtx.destination);
     this.#wave = new Uint8Array(this.#bassAnalyzer.frequencyBinCount);
-
-    this.#tap = new AudioWorkletNode(this.#audioCtx, "tap-processor");
 
     this.#tap.port.onmessage = this.OnMessage;
   }
@@ -66,6 +86,7 @@ export class AudioInfo {
     if (this.#bassAnalyzer && this.#wave) {
       this.#boom = this.getBassLevel(this.#bassAnalyzer, this.#wave);
     }
+    this.#animation.setAudioInfo(this.#audioArray, this.#boom);
   };
 
   getBassLevel(analyzer, wave) {
