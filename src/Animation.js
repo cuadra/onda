@@ -8,12 +8,12 @@ export class Animation {
   #acc = 0;
   #animating = true;
   #canvas = new View(document.querySelector("canvas"));
-  constructor() {
+  constructor(audio) {
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) {
         this.stop();
       } else {
-        if (!audioElement.paused) {
+        if (!audio.paused) {
           this.start();
         }
       }
