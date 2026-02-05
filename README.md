@@ -1,4 +1,4 @@
 # onda
 The beginnings of an audio visualizer
 
-<img width="1509" height="575" alt="image" src="https://github.com/user-attachments/assets/949af7bd-0613-4bdd-9437-2dd0de2c8733" />
+![clipped](https://github.com/user-attachments/assets/e9c2a02a-c1c0-46f9-b609-cc4f8058f6a4)
