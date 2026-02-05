@@ -1,7 +1,7 @@
 import { Animation } from "./Animation.js";
 
 export class AudioInfo {
-  #animation = new Animation();
+  #animation = null;
   #audioArray = new Uint8Array();
   #animating = false;
   #frameId = null;
@@ -20,6 +20,7 @@ export class AudioInfo {
   #connected = false;
   constructor(audio) {
     this.#audio = audio;
+    this.#animation = new Animation(audio);
   }
 
   async Start() {
