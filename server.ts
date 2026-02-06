@@ -35,6 +35,11 @@ Bun.serve({
         headers: { "Content-Type": "application/javascript" },
       });
     }
+    if (path === "/src/Colors.js") {
+      return new Response(Bun.file("./src/Colors.js"), {
+        headers: { "Content-Type": "application/javascript" },
+      });
+    }
 
     if (path === "/") {
       return new Response(Bun.file("./src/index.html"), {

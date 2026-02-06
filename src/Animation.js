@@ -40,7 +40,6 @@ export class Animation {
       this.#acc = 0;
 
       //this.#canvasContext.clearRect(0, 0, 150, 150);
-
       this.#canvas.Reset();
       this.#canvas.EQ(this.#audioArray);
       this.#canvas.Circle(this.#boom, 5, 15, "cyan", "white");

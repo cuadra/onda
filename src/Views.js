@@ -1,5 +1,8 @@
+import { Colors } from "./Colors.js";
+
 export class View {
   #canvas;
+  #colors = [];
   #canvasSize = { w: 0, h: 0 };
   #canvasContext;
   #gap = 5;
@@ -13,6 +16,12 @@ export class View {
       height: this.#canvas.height,
     };
     this.#posY = this.#canvasSize.height / 2;
+
+    const c = new Colors();
+    this.#colors = c.CreateGradient(128, [
+      { h: 200, s: 100, l: 60, a: 1 },
+      { h: 290, s: 100, l: 60, a: 1 },
+    ]);
   }
 
   Reset() {
@@ -28,9 +37,9 @@ export class View {
       this.#canvasSize.width,
       this.#canvasSize.height,
     );
-    gradient.addColorStop(0, "rgba(40,36,97,1)");
+    gradient.addColorStop(0, "rgba(26,26,26,1)");
     //#canvasSize = { width: window.innerWidth, height: window.innerHeight };
-    gradient.addColorStop(1, "rgba(28,28,69,1)");
+    gradient.addColorStop(1, "rgba(59,59,59,1)");
     this.#canvasContext.fillStyle = gradient;
     this.#canvasContext.fillRect(
       0,
@@ -50,7 +59,7 @@ export class View {
   }
   EQBar(width, maxHeight, percentage, index) {
     const h = percentage * 0.01;
-    const height = h * maxHeight;
+    let height = h * maxHeight;
     const x = index * width + this.#gap * index + this.#gap;
 
     //const randomAlpha = Math.random() * 0.5 + 0.5;
@@ -101,25 +110,34 @@ export class View {
           0,
           Math.max(startY + height / 2, min),
         );
+        gradient.addColorStop(0, `hsla(${this.#colors[index]} 100% 60% / 0)`);
+        gradient.addColorStop(
+          0.2,
+          `hsla(${this.#colors[index]} 100% 60% / ${randomAlpha})`,
+        );
+        gradient.addColorStop(
+          0.48,
+          `hsla(${this.#colors[index]} 100% 60% / 1)`,
+        );
 
-        gradient.addColorStop(0, `rgba(240,125,255,0)`);
-        gradient.addColorStop(0.4, `rgba(240,125,255, ${randomAlpha})`);
-        gradient.addColorStop(0.48, `rgba(248,191,255,1)`);
-        gradient.addColorStop(0.5, `rgba(255,255,255, 1)`);
-        gradient.addColorStop(0.52, `rgba(248,191,255,1)`);
-        gradient.addColorStop(0.6, `rgba(240,125,255, ${randomAlpha})`);
-        gradient.addColorStop(1, `rgba(240,125,255,0)`);
+        gradient.addColorStop(
+          0.52,
+          `hsla(${this.#colors[index]} 100% 60% / 1)`,
+        );
+        gradient.addColorStop(
+          0.8,
+          `hsla(${this.#colors[index]} 100% 60% / ${randomAlpha})`,
+        );
+        gradient.addColorStop(1, `hsla(${this.#colors[index]} 100% 60% / 0)`);
     }
 
     this.#canvasContext.fillStyle = gradient;
-
     this.#canvasContext.beginPath();
-
     this.#canvasContext.roundRect(x, pos.y, width, Math.max(min, height), 2);
     this.#canvasContext.fill();
   }
   Circle(boom, stroke, blur, color, accent) {
-    let size = boom * 70;
+    let size = boom * 100;
     this.#canvasContext.beginPath();
     this.#canvasContext.arc(
       this.#canvasSize.width / 2,
